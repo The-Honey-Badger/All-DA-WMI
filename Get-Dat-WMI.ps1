@@ -31,6 +31,6 @@ ForEach ($i in (Get-WmiObject -List | Select-Object Name)) {
     write-host $txt #| Out-File $OutFile -Append -NoClobber
     
     # Get WMI Object Properties and output to file
-    Get-WmiObject $i.Name | Out-File $OutFile -Append -NoClobber
+    Get-WmiObject -class $i.Name -EnableAllPrivileges -ErrorAction SilentlyContinue | Out-File $OutFile -Append -NoClobber
       
 }
