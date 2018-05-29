@@ -1,8 +1,25 @@
+# Test if running with Elevated Privs else exit
+& {
+ $wid=[System.Security.Principal.WindowsIdentity]::GetCurrent()
+ $prp=new-object System.Security.Principal.WindowsPrincipal($wid)
+ $adm=[System.Security.Principal.WindowsBuiltInRole]::Administrator
+ $IsAdmin=$prp.IsInRole($adm)
+ if ($IsAdmin)
+ {
+    Write-host "Script Running With elevated Privladges" 
+ }
+ Else 
+ {
+    write-host "Script not running as Admin. please restart powershell with elevated privladges."
+    exit
+ }
+}
+
 # Set New Line format to support MS Notepad
 $NLCR = "`r`n"
 
 # Set Output path and Filename
-$OutFile = "C:\temp\ALL-DA-WMI-"+(get-date -Format MMddyyyy:HHmm)+".txt"
+$OutFile = "C:\temp\ALL-DA-WMI-"+(get-date -Format MMddyyyy_HHmm)+".txt"
 
 # Write Filename and Path to screen output 
 Write-Host Saving to -> $OutFile
@@ -11,9 +28,7 @@ Write-Host Saving to -> $OutFile
 ForEach ($i in (Get-WmiObject -List | Select-Object Name)) {
 
     # Write current class and time to output file
-    echo "Current Class-> " $i.Name + $NLCR + "Current Time: " + (get-date -Format MMddyyyy:HHmm) + $NLCR | Out-File $OutFile -Append -NoClobber
+    echo "Current Class-> " $i.Name $NLCR "Current Time: " (get-date -Format MMddyyyy_HHmm) $NLCR | Out-File $OutFile -Append -NoClobber
     
     # Get WMI Object Properties and output to file
     Get-WmiObject $i.Name | Out-File $OutFile -Append -NoClobber
-      
-}
