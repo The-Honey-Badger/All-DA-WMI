@@ -50,10 +50,9 @@ $OutputBox.ForeColor="White"
 $Form.Controls.Add($OutputBox)
 
 
-
 $JFMSU_Click = {Update_textbox -String "OK Ass Hat, Here We Go....";GetDaWMI}
 
-
+# Function for updating output text box. Does not work in GetDaWMI function...
 function Update_textbox {
     param([string]$String)
     #$OutputBox.Clear()
@@ -66,6 +65,8 @@ function Log {
 	Out-File $filename -append -noclobber -inputobject $text -encoding ASCII
 }
 
+
+# Function to kick off the fun
 function GetDaWMI {
 
     # Set New Line format to support MS Notepad
